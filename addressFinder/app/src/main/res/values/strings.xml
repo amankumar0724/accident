@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Accident Finder</string>
+    <string name="app_name">Smart Safety</string>
+    <string name="sender_phone_number">6354997765</string>
 </resources>

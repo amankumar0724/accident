@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-
+    implementation("com.google.firebase:firebase-auth:21.0.1")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -41,3 +41,4 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
+apply(plugin = "com.google.gms.google-services")

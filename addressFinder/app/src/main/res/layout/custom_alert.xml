@@ -1,0 +1,29 @@
+<!-- res/layout/custom_alert.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/alertTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alert Title"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingBottom="10dp" />
+
+    <TextView
+        android:id="@+id/alertMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This is a custom alert message."
+        android:paddingBottom="20dp" />
+
+    <Button
+        android:id="@+id/buttonOk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OK" />
+</LinearLayout>

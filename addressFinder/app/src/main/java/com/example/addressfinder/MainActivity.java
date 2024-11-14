@@ -1,26 +1,36 @@
 package com.example.addressfinder;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
                             // Check if the message is from the specified sender
 
-                                Toast.makeText(MainActivity.this, "coordinates found", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(MainActivity.this, "coordinates found", Toast.LENGTH_SHORT).show();
                             if (sender.contains(SENDER_PHONE_NUMBER)) {
                                 String message = ReadSMS();
 //                                extractCoordinates(messageBody);
@@ -66,7 +76,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+    private ImageView signOutButton;
+    private FirebaseAuth mAuth;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Request SMS permissions
         requestSmsPermission();
+
 
         // Register SMS receiver
         registerReceiver(smsReceiver, new IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION));
@@ -100,10 +114,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         buttonOpenMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openInMap();
+            }
+        });
+        mAuth = FirebaseAuth.getInstance();
+
+        signOutButton = findViewById(R.id.buttonSignOut); // Button for Sign Out
+
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut(); // Call the sign-out method
             }
         });
     }
@@ -158,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 //                    date,
                     message
             );
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();  // Changed to
+            Toast.makeText(this, "ACCIDENT ALERT", Toast.LENGTH_LONG).show();  // Changed to
             // LENGTH_LONG to give more time to read
 
             cursor.close();
@@ -207,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
                     buttonFetchAddress.performClick();
                 }
             });
+
         }
     }
 
@@ -263,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
                     Address address = addresses.get(0);
                     String addressString = address.getAddressLine(0); // Full address
                     textViewAddress.setText("Address: " + addressString);
+                    showCustomAlert("ACCIDENT ALERT",addressString);
                 } else {
                     textViewAddress.setText("Address not found.");
                 }
@@ -299,5 +326,62 @@ public class MainActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Please enter valid coordinates", Toast.LENGTH_SHORT).show();
         }
+    }
+//    private void signOut() {
+//        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putBoolean("isLoggedIn", false);
+//        editor.apply();
+//
+//        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
+    private void signOut() {
+        // Sign out the current user from Firebase Authentication
+        mAuth.signOut();
+
+        // Redirect to SignInActivity or any other activity where users can log in
+        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+        startActivity(intent);
+        finish();  // Close the MainActivity
+        Toast.makeText(this, "Successfully signed out", Toast.LENGTH_SHORT).show();
+    }
+    public void showCustomAlert(String title, String message) {
+        // Inflate the custom alert layout
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.custom_alert, null);
+
+        // Set the title and message in the custom layout
+        TextView alertTitle = alertLayout.findViewById(R.id.alertTitle);
+        TextView alertMessage = alertLayout.findViewById(R.id.alertMessage);
+        alertTitle.setText(title);
+        alertMessage.setText(message);
+
+        // Create the dialog builder and set the custom layout
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(alertLayout);
+
+        // Create and show the dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        // Play alert sound
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.alert_sound); // Use your sound file name here
+        mediaPlayer.start();
+
+        // Release the MediaPlayer when the alert dialog is dismissed
+        alertDialog.setOnDismissListener(dialog -> mediaPlayer.release());
+
+        // Set the OK button functionality
+        Button buttonOk = alertLayout.findViewById(R.id.buttonOk);
+        buttonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.stop(); // Stop the sound when OK is clicked
+                mediaPlayer.release();
+                alertDialog.dismiss(); // Dismiss the dialog when OK is clicked
+            }
+        });
     }
 }

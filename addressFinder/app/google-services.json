@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "945505195397",
+    "project_id": "smartsafety-f549f",
+    "storage_bucket": "smartsafety-f549f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945505195397:android:3ccccbf07f74b1e34220ec",
+        "android_client_info": {
+          "package_name": "com.example.addressfinder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq7yYM7DTddmYZPBN7Pt6N2SUhFIBwKdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

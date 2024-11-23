@@ -26,13 +26,12 @@ public class AccidentDetailsActivity extends AppCompatActivity {
         TextView tvGasValue = findViewById(R.id.tvGasValue);
         TextView tvTiltValue = findViewById(R.id.tvTiltValue);
 
-        // Set the TextViews with the values from the HashMap
-        String[] coordinates = accidentDetails.get("Location").split(",");
-        tvLatitute.setText("Latitude : "+coordinates[0]);
-        tvLongitude.setText("Longitude : "+coordinates[1]);
+        // Set the TextViews with the values from the HashMa
+        tvLatitute.setText("Latitude: "+accidentDetails.get("Latitude"));
+        tvLongitude.setText("Longitude: "+accidentDetails.get("Longitude"));
         tvTemperature.setText(accidentDetails.get("Temperature"));
         tvRainValue.setText(accidentDetails.get("Rain Value"));
         tvGasValue.setText(accidentDetails.get("Gas Value"));
-        tvTiltValue.setText(accidentDetails.get("Tilt Sensor"));
+        tvTiltValue.setText(accidentDetails.get("Tilt Value"));
     }
 }

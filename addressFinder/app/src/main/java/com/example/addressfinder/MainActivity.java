@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonOpenMap;
     private static final int SMS_PERMISSION_CODE = 101;
     private static final String SENDER_PHONE_NUMBER = "6354997765";
+    private Integer flag = 0;
+    private HashMap<String, String> message = null;
 //    aryan
     // Replace with the actual
     // phone number
@@ -68,12 +71,12 @@ public class MainActivity extends AppCompatActivity {
                         for (Object pdu : pdus) {
                             SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) pdu);
                             String sender = smsMessage.getDisplayOriginatingAddress();
-                            String messageBody = smsMessage.getMessageBody();
-
+//                            String messageBody = smsMessage.getMessageBody();
+                            Log.d("Sender", sender);
                             // Check if the message is from the specified sender
 
                             if (sender.contains(SENDER_PHONE_NUMBER)) {
-                                String message = ReadSMS();
+                                 message = ReadSMS();
 //                                extractCoordinates(messageBody);
                                 extractCoordinates(message);
                             }
@@ -98,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         textViewAddress = findViewById(R.id.textViewAddress);
         Button buttonFetchAddress = findViewById(R.id.buttonFetchAddress);
         buttonOpenMap = findViewById(R.id.buttonOpenMap);
+        Button cardViewCurrentAccident = findViewById(R.id.cardViewCurrentAccident);
 
         // Request SMS permissions
         requestSmsPermission();
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(smsReceiver, new IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION));
         // Initially disable the Open in Map button
         buttonOpenMap.setEnabled(false);
+//        cardViewCurrentAccident.setEnabled(false);
 
         // Set up button click listeners
         buttonFetchAddress.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                     getAddressFromLocation();
                     // Enable the Open in Map button after fetching address
                     buttonOpenMap.setEnabled(true);
+                    flag = 1;
                 }
             }
         });
@@ -136,21 +142,22 @@ public class MainActivity extends AppCompatActivity {
                 signOut(); // Call the sign-out method
             }
         });
-        Button cardViewCurrentAccident = findViewById(R.id.cardViewCurrentAccident);
 
         cardViewCurrentAccident.setOnClickListener(v -> {
             // Example accident details
-            HashMap<String, String> accidentDetails = new HashMap<>();
-            accidentDetails.put("Location", "25.221990,81.666493");
-            accidentDetails.put("Temperature", "45.6°C");
-            accidentDetails.put("Rain Value", "541");
-            accidentDetails.put("Gas Value", "550");
-            accidentDetails.put("Tilt Sensor", "23");
+//            HashMap<String, String> accidentDetails = new HashMap<>();
+//            accidentDetails.put("Location", "25.221990,81.666493");
+//            accidentDetails.put("Temperature", "45.6°C");
+//            accidentDetails.put("Rain Value", "541");
+//            accidentDetails.put("Gas Value", "550");
+//            accidentDetails.put("Tilt Sensor", "23");
 
             // Launch AccidentDetailsActivity and pass the details
-            Intent intent = new Intent(MainActivity.this, AccidentDetailsActivity.class);
-            intent.putExtra("accident_details", accidentDetails);
-            startActivity(intent);
+            if(message != null) {
+                Intent intent = new Intent(MainActivity.this, AccidentDetailsActivity.class);
+                intent.putExtra("accident_details", message);
+                startActivity(intent);
+            }
         });
 
 
@@ -177,8 +184,24 @@ public class MainActivity extends AppCompatActivity {
                     SMS_PERMISSION_CODE);
         }
     }
+    private HashMap<String, String> parseMessageToHashMap(String message) {
+        HashMap<String, String> accidentDetails = new HashMap<>();
 
-    private String ReadSMS() {
+        // Split the message by lines
+        String[] lines = message.split("\n");
+        for (String line : lines) {
+            // Split each line into key and value based on the ":" separator
+            String[] parts = line.split(":", 2);
+            if (parts.length == 2) {
+                String key = parts[0].trim();
+                String value = parts[1].trim();
+                accidentDetails.put(key, value);
+            }
+        }
+        return accidentDetails;
+    }
+
+    private HashMap<String, String> ReadSMS() {
         Uri uri = Uri.parse("content://sms/inbox");
         Cursor cursor = getContentResolver().query(
                 uri,
@@ -199,24 +222,25 @@ public class MainActivity extends AppCompatActivity {
             String date = dateFormat.format(new Date(dateMillis));
 
             // Create formatted message string
-            String formattedMessage = String.format(
-                    "From: %s\n" +
-//                    "Date: %s\n" +
-                            "Message: %s\n",
-                    sender,
-//                    date,
-                    message
-            );
+//            String formattedMessage = String.format(
+//                    "From: %s\n" +
+////                    "Date: %s\n" +
+//                            "Message: %s\n",
+//                    sender,
+////                    date,
+//                    message
+//            );
+            HashMap<String, String> accidentDetails = parseMessageToHashMap(message);
             Toast.makeText(this, "ACCIDENT ALERT", Toast.LENGTH_LONG).show();  // Changed to
             // LENGTH_LONG to give more time to read
 
             cursor.close();
-            return message;
+            return accidentDetails;
         }
         return null;
     }
 
-    private void extractCoordinates(String messageBody) {
+    private void extractCoordinates(HashMap<String, String> messageBody) {
         // Pattern to match latitude and longitude
 //        Pattern pattern = Pattern.compile("(-?\\d+\\.?\\d*)\\s*[,\\s]+\\s*(-?\\d+\\.?\\d*)");
 //        Matcher matcher = pattern.matcher(messageBody);
@@ -239,11 +263,12 @@ public class MainActivity extends AppCompatActivity {
 //                }
 //            });
 //        }
-        String[] coordinates = messageBody.split(",");
-        if(coordinates.length == 2){
-            String latitude = coordinates[0];  // "25.426245"
-            String longitude = coordinates[1]; // "81.755877"
-
+//        String[] coordinates = messageBody.split(",");
+//        if(coordinates.length == 2){
+//            String latitude = coordinates[0];  // "25.426245"
+//            String longitude = coordinates[1]; // "81.755877"
+            String latitude = messageBody.get("Latitude");
+            String longitude = messageBody.get("Longitude");
             // Set the values
             editTextLatitude.setText(latitude);
             editTextLongitude.setText(longitude);
@@ -256,9 +281,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             });
-
-
-        }
+//        }
     }
 
     @Override
@@ -417,7 +440,6 @@ public class MainActivity extends AppCompatActivity {
         // Pass the title and message as extras
         intent.putExtra("alert_title", title);
         intent.putExtra("alert_message", message);
-
         // Start the AlertScreenActivity
         startActivity(intent);
 

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:padding="16dp"
-        android:text="Accident Finder"
+        android:text="Smart Safety"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold" />

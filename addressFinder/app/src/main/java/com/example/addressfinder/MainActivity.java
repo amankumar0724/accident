@@ -18,14 +18,17 @@ import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -33,7 +36,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -46,12 +51,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewAddress;
     private Button buttonOpenMap;
     private static final int SMS_PERMISSION_CODE = 101;
-    private static final String SENDER_PHONE_NUMBER = "6354997765"; // Replace with the actual
+    private static final String SENDER_PHONE_NUMBER = "6354997765";
+//    aryan
+    // Replace with the actual
     // phone number
 
     private BroadcastReceiver smsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+//            Toast.makeText(MainActivity.this, "coordinates found", Toast.LENGTH_SHORT).show();
             if (intent.getAction().equals(Telephony.Sms.Intents.SMS_RECEIVED_ACTION)) {
                 Bundle bundle = intent.getExtras();
                 if (bundle != null) {
@@ -64,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
                             // Check if the message is from the specified sender
 
-//                                Toast.makeText(MainActivity.this, "coordinates found", Toast.LENGTH_SHORT).show();
                             if (sender.contains(SENDER_PHONE_NUMBER)) {
                                 String message = ReadSMS();
 //                                extractCoordinates(messageBody);
@@ -98,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Register SMS receiver
         registerReceiver(smsReceiver, new IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION));
-
         // Initially disable the Open in Map button
         buttonOpenMap.setEnabled(false);
 
@@ -113,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         buttonOpenMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +136,24 @@ public class MainActivity extends AppCompatActivity {
                 signOut(); // Call the sign-out method
             }
         });
+        CardView cardViewCurrentAccident = findViewById(R.id.cardViewCurrentAccident);
+
+        cardViewCurrentAccident.setOnClickListener(v -> {
+            // Example accident details
+            HashMap<String, String> accidentDetails = new HashMap<>();
+            accidentDetails.put("Location", "25.221990,81.666493");
+            accidentDetails.put("Temperature", "45.6°C");
+            accidentDetails.put("Rain Value", "541");
+            accidentDetails.put("Gas Value", "550");
+            accidentDetails.put("Tilt Sensor", "23");
+
+            // Launch AccidentDetailsActivity and pass the details
+            Intent intent = new Intent(MainActivity.this, AccidentDetailsActivity.class);
+            intent.putExtra("accident_details", accidentDetails);
+            startActivity(intent);
+        });
+
+
     }
 
     @Override
@@ -154,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                     SMS_PERMISSION_CODE);
         }
     }
+
     private String ReadSMS() {
         Uri uri = Uri.parse("content://sms/inbox");
         Cursor cursor = getContentResolver().query(
@@ -178,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
             String formattedMessage = String.format(
                     "From: %s\n" +
 //                    "Date: %s\n" +
-                    "Message: %s\n",
+                            "Message: %s\n",
                     sender,
 //                    date,
                     message
@@ -215,7 +239,6 @@ public class MainActivity extends AppCompatActivity {
 //                }
 //            });
 //        }
-
         String[] coordinates = messageBody.split(",");
         if(coordinates.length == 2){
             String latitude = coordinates[0];  // "25.426245"
@@ -231,7 +254,9 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     buttonFetchAddress.performClick();
                 }
+
             });
+
 
         }
     }
@@ -256,7 +281,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter both latitude and longitude", Toast.LENGTH_SHORT).show();
             return false;
         }
-
         try {
             double latitude = Double.parseDouble(lat);
             double longitude = Double.parseDouble(lon);
@@ -269,7 +293,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Invalid longitude value", Toast.LENGTH_SHORT).show();
                 return false;
             }
-
             return true;
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Please enter valid numbers", Toast.LENGTH_SHORT).show();
@@ -290,6 +313,9 @@ public class MainActivity extends AppCompatActivity {
                     String addressString = address.getAddressLine(0); // Full address
                     textViewAddress.setText("Address: " + addressString);
                     showCustomAlert("ACCIDENT ALERT",addressString);
+//                    Intent intent = new Intent(MainActivity.this,AlertScreenActivity.class);
+//                    startActivity(intent);
+//                    finish();
                 } else {
                     textViewAddress.setText("Address not found.");
                 }
@@ -327,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter valid coordinates", Toast.LENGTH_SHORT).show();
         }
     }
-//    private void signOut() {
+    //    private void signOut() {
 //        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
 //        SharedPreferences.Editor editor = sharedPreferences.edit();
 //        editor.putBoolean("isLoggedIn", false);
@@ -348,40 +374,54 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Successfully signed out", Toast.LENGTH_SHORT).show();
     }
     public void showCustomAlert(String title, String message) {
-        // Inflate the custom alert layout
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.custom_alert, null);
+//        // Inflate the custom alert layout
+//        LayoutInflater inflater = getLayoutInflater();
+//        View alertLayout = inflater.inflate(R.layout.custom_alert, null);
+//
+//        // Set the title and message in the custom layout
+//        TextView alertTitle = alertLayout.findViewById(R.id.warningText);
+//        TextView alertMessage = alertLayout.findViewById(R.id.warningDescription);
+//        alertTitle.setText(title);
+//        alertMessage.setText(message);
+//
+//        // Create the dialog builder and set the custom layout
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+//        alertDialogBuilder.setView(alertLayout);
+//
+//        // Create and show the dialog
+//        AlertDialog alertDialog = alertDialogBuilder.create();
+//        alertDialog.show();
+//
+//        // Play alert sound
+//        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.alert_sound); // Use your sound file name here
+//        mediaPlayer.start();
+//
+//        // Release the MediaPlayer when the alert dialog is dismissed
+//        alertDialog.setOnDismissListener(dialog -> mediaPlayer.release());
+//
+//        // Set the OK button functionality
+//        Button buttonOk = alertLayout.findViewById(R.id.noButton);
+//        buttonOk.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mediaPlayer.stop(); // Stop the sound when OK is clicked
+//                mediaPlayer.release();
+//                alertDialog.dismiss(); // Dismiss the dialog when OK is clicked
+//            }
+//        });
 
-        // Set the title and message in the custom layout
-        TextView alertTitle = alertLayout.findViewById(R.id.alertTitle);
-        TextView alertMessage = alertLayout.findViewById(R.id.alertMessage);
-        alertTitle.setText(title);
-        alertMessage.setText(message);
 
-        // Create the dialog builder and set the custom layout
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setView(alertLayout);
 
-        // Create and show the dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        // Create an Intent to start AlertScreenActivity
+        Intent intent = new Intent(MainActivity.this, AlertScreenActivity.class);
+        // Pass the title and message as extras
+        intent.putExtra("alert_title", title);
+        intent.putExtra("alert_message", message);
 
-        // Play alert sound
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.alert_sound); // Use your sound file name here
-        mediaPlayer.start();
+        // Start the AlertScreenActivity
+        startActivity(intent);
 
-        // Release the MediaPlayer when the alert dialog is dismissed
-        alertDialog.setOnDismissListener(dialog -> mediaPlayer.release());
-
-        // Set the OK button functionality
-        Button buttonOk = alertLayout.findViewById(R.id.buttonOk);
-        buttonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mediaPlayer.stop(); // Stop the sound when OK is clicked
-                mediaPlayer.release();
-                alertDialog.dismiss(); // Dismiss the dialog when OK is clicked
-            }
-        });
+        // Optionally, you can finish the current activity if you want to close it
+//         finish();
     }
 }

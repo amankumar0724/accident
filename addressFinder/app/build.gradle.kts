@@ -33,10 +33,13 @@ android {
 
 dependencies {
     implementation("com.google.firebase:firebase-auth:21.0.1")
+    implementation ("androidx.cardview:cardview:1.0.0")
+//    implementation ("com.android.support:cardview-v7:27.1.1")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.cardview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -1,29 +1,126 @@
-<!-- res/layout/custom_alert.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="20dp"
-    android:orientation="vertical">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff4443"
+    tools:context=".AlertScreenActivity"
+    >
 
+    <!-- Alert Image -->
+    <ImageView
+        android:id="@+id/myImageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_alert"
+        android:contentDescription="Example Image"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp" />
+
+    <!-- Warning Text -->
     <TextView
-        android:id="@+id/alertTitle"
+        android:id="@+id/warningText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Alert Title"
-        android:textSize="18sp"
+        android:text="ALERT!"
+        android:textColor="#ffffff"
+        android:textSize="36sp"
         android:textStyle="bold"
-        android:paddingBottom="10dp" />
+        app:layout_constraintTop_toBottomOf="@id/myImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
+    <!-- Warning Description -->
     <TextView
-        android:id="@+id/alertMessage"
-        android:layout_width="wrap_content"
+        android:id="@+id/warningDescription"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:text="This is a custom alert message."
-        android:paddingBottom="20dp" />
+        android:text="Immediate attention needed"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/warningText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
 
-    <Button
-        android:id="@+id/buttonOk"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="OK" />
-</LinearLayout>
+    <!-- FrameLayout to Overlay ProgressBar and Timer Text -->
+    <FrameLayout
+        android:id="@+id/circularTimer"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintTop_toBottomOf="@id/warningDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp">
+
+        <!-- Circular Progress Bar -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminate="false"
+            android:progress="100"
+            android:progressDrawable="@drawable/circular_progress"
+            android:max="100" />
+
+        <!-- Timer Text -->
+        <TextView
+            android:id="@+id/timerText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="10"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <!-- Yes Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/yesButton"
+        android:layout_width="120dp"
+        android:layout_height="48dp"
+        android:backgroundTint="#31b812"
+        android:text="I'm Fine"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintTop_toBottomOf="@id/circularTimer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/noButton"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp" />
+
+    <!-- No Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/noButton"
+        android:layout_width="120dp"
+        android:layout_height="48dp"
+        android:backgroundTint="#000000"
+        android:text="Not Fine"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintTop_toBottomOf="@id/circularTimer"
+        app:layout_constraintStart_toEndOf="@id/yesButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp" />
+
+<!--    &lt;!&ndash; Confirm Button &ndash;&gt;-->
+<!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/confirmButton"-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:backgroundTint="#ffffff"-->
+<!--        android:text="Confirm"-->
+<!--        android:textColor="#ff4444"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/yesButton"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:layout_marginTop="32dp" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

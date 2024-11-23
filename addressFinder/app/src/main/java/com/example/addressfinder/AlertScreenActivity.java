@@ -74,6 +74,8 @@ public class AlertScreenActivity extends AppCompatActivity {
 
     private TextView alertTitleTextView;
     private TextView alertMessageTextView;
+    private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,12 +94,13 @@ public class AlertScreenActivity extends AppCompatActivity {
         String alertTitle = intent.getStringExtra("alert_title");
         String alertMessage = intent.getStringExtra("alert_message");
 
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.alert_sound); // Use your sound file name here
-        mediaPlayer.start();
 
         // Set the alert title and message
         alertTitleTextView.setText(alertTitle);
         alertMessageTextView.setText(alertMessage);
+        mediaPlayer = MediaPlayer.create(this, R.raw.alert_sound); // Use your sound file name here
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
         // Start the countdown
 
 //        handler.post(executorBasedCountdown);
@@ -106,8 +109,9 @@ public class AlertScreenActivity extends AppCompatActivity {
         // Set up button listeners
         yesButton.setOnClickListener(v -> {
 
-            mediaPlayer.stop(); // Stop the sound when OK is clicked
-            mediaPlayer.release();
+//            mediaPlayer.stop(); // Stop the sound when OK is clicked
+//            mediaPlayer.release();
+            stopMediaPlayer();
             finish();  // Close this activity and go back
         });
 
@@ -115,25 +119,45 @@ public class AlertScreenActivity extends AppCompatActivity {
             // Handle "Not Fine" button click
 
 
-            mediaPlayer.stop(); // Stop the sound when OK is clicked
-            mediaPlayer.release();
+//            mediaPlayer.stop(); // Stop the sound when OK is clicked
+//            mediaPlayer.release();
+            stopMediaPlayer();
             finish();  // Close this activity and go back
         });
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // Stop the countdown when the activity is paused (e.g., user switches apps)
-        handler.removeCallbacks(executorBasedCountdown);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Restart the countdown when the activity is resumed
-        if (timerValue > 0) {
-            handler.post(executorBasedCountdown);
+    private void stopMediaPlayer() {
+        if (mediaPlayer != null) {
+            try {
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                }
+                mediaPlayer.reset(); // Reset the MediaPlayer to its uninitialized state
+                mediaPlayer.release(); // Release resources
+                mediaPlayer = null; // Nullify the reference
+            } catch (IllegalStateException e) {
+                e.printStackTrace(); // Handle or log the exception
+            }
         }
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopMediaPlayer(); // Ensure the MediaPlayer is properly stopped and released
+    }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        // Stop the countdown when the activity is paused (e.g., user switches apps)
+//        handler.removeCallbacks(executorBasedCountdown);
+//    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        // Restart the countdown when the activity is resumed
+//        if (timerValue > 0) {
+//            handler.post(executorBasedCountdown);
+//        }
+//    }
 }

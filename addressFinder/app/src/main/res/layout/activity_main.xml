@@ -78,12 +78,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Open in Map"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="26dp"
         android:layout_marginHorizontal="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonFetchAddress" />
 
+    <Button
+        android:id="@+id/cardViewCurrentAccident"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Current Accident Details"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonOpenMap" />
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewAddress"
         android:layout_width="0dp"
@@ -94,7 +104,7 @@
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonOpenMap">
+        app:layout_constraintTop_toBottomOf="@+id/cardViewCurrentAccident">
 
         <TextView
             android:id="@+id/textViewAddress"
@@ -108,29 +118,29 @@
 
     </androidx.cardview.widget.CardView>
     <!-- Card Button to Show Current Accident Details -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewCurrentAccident"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="24dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
-        app:layout_constraintTop_toBottomOf="@id/cardViewAddress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:clickable="true"
-        android:focusable="true">
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/cardViewCurrentAccident"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginHorizontal="24dp"-->
+<!--        app:cardCornerRadius="8dp"-->
+<!--        app:cardElevation="4dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/cardViewAddress"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:clickable="true"-->
+<!--        android:focusable="true">-->
 
-        <TextView
-            android:id="@+id/textViewCurrentAccident"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Current Accident Details"
-            android:gravity="center"
-            android:textColor="#00001f"
-            android:textStyle="bold" />
-    </androidx.cardview.widget.CardView>
+<!--        <TextView-->
+<!--            android:id="@+id/textViewCurrentAccident"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="16dp"-->
+<!--            android:text="Current Accident Details"-->
+<!--            android:gravity="center"-->
+<!--            android:textColor="#00001f"-->
+<!--            android:textStyle="bold" />-->
+<!--    </androidx.cardview.widget.CardView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

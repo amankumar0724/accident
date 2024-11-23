@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 signOut(); // Call the sign-out method
             }
         });
-        CardView cardViewCurrentAccident = findViewById(R.id.cardViewCurrentAccident);
+        Button cardViewCurrentAccident = findViewById(R.id.cardViewCurrentAccident);
 
         cardViewCurrentAccident.setOnClickListener(v -> {
             // Example accident details

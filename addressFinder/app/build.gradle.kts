@@ -34,6 +34,13 @@ android {
 dependencies {
     implementation("com.google.firebase:firebase-auth:21.0.1")
     implementation ("androidx.cardview:cardview:1.0.0")
+//    implementation ("androidx.drawerlayout:drawerlayout:1.1.1")
+    implementation ("com.google.android.material:material:1.8.0")
+    implementation ("androidx.drawerlayout:drawerlayout:1.2.0")
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.3")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.7.3")
+
+
 //    implementation ("com.android.support:cardview-v7:27.1.1")
     implementation(libs.appcompat)
     implementation(libs.material)

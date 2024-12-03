@@ -118,29 +118,29 @@
 
     </androidx.cardview.widget.CardView>
     <!-- Card Button to Show Current Accident Details -->
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:id="@+id/cardViewCurrentAccident"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_marginHorizontal="24dp"-->
-<!--        app:cardCornerRadius="8dp"-->
-<!--        app:cardElevation="4dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/cardViewAddress"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        android:clickable="true"-->
-<!--        android:focusable="true">-->
+    <!--    <androidx.cardview.widget.CardView-->
+    <!--        android:id="@+id/cardViewCurrentAccident"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="16dp"-->
+    <!--        android:layout_marginHorizontal="24dp"-->
+    <!--        app:cardCornerRadius="8dp"-->
+    <!--        app:cardElevation="4dp"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/cardViewAddress"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        android:clickable="true"-->
+    <!--        android:focusable="true">-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/textViewCurrentAccident"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:padding="16dp"-->
-<!--            android:text="Current Accident Details"-->
-<!--            android:gravity="center"-->
-<!--            android:textColor="#00001f"-->
-<!--            android:textStyle="bold" />-->
-<!--    </androidx.cardview.widget.CardView>-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/textViewCurrentAccident"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:padding="16dp"-->
+    <!--            android:text="Current Accident Details"-->
+    <!--            android:gravity="center"-->
+    <!--            android:textColor="#00001f"-->
+    <!--            android:textStyle="bold" />-->
+    <!--    </androidx.cardview.widget.CardView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

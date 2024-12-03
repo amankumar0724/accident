@@ -13,8 +13,6 @@
         android:spacing="8dp">
 
         <!-- Title -->
-
-        <!-- Location Section -->
         <TextView
             android:id="@+id/tvDashboardTitle"
             android:layout_width="wrap_content"
@@ -26,7 +24,45 @@
             android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:elevation="4dp"
+            app:cardBackgroundColor="#5D8F7E"
+            app:cardCornerRadius="8dp">
 
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center"-->
+<!--                android:padding="10dp"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tvAddressHeading"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="⚲ Address"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginBottom="10dp"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tvAddress"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:text="N/A" />-->
+<!--            </LinearLayout>-->
+        </androidx.cardview.widget.CardView>
+
+<!--        location-->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +73,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
+                android:gravity="center"
                 android:padding="10dp"
                 android:orientation="vertical">
 
@@ -74,6 +111,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+
         <!-- Temperature Section -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -86,8 +124,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:padding="10dp">
 
                 <TextView
@@ -126,7 +165,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
+                android:gravity="center"
                 android:padding="10dp"
                 android:orientation="vertical">
 
@@ -164,7 +204,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
+                android:gravity="center"
                 android:padding="10dp"
                 android:orientation="vertical">
 
@@ -202,7 +243,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
+                android:gravity="center"
                 android:orientation="vertical"
                 android:padding="10dp">
 

@@ -53,11 +53,9 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonOpenMap;
     private static final int SMS_PERMISSION_CODE = 101;
     private static final String SENDER_PHONE_NUMBER = "6354997765";
+//    6354997765
     private Integer flag = 0;
     private HashMap<String, String> message = null;
-//    aryan
-    // Replace with the actual
-    // phone number
 
     private BroadcastReceiver smsReceiver = new BroadcastReceiver() {
         @Override
@@ -71,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
                         for (Object pdu : pdus) {
                             SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) pdu);
                             String sender = smsMessage.getDisplayOriginatingAddress();
+
 //                            String messageBody = smsMessage.getMessageBody();
                             Log.d("Sender", sender);
                             // Check if the message is from the specified sender
 
                             if (sender.contains(SENDER_PHONE_NUMBER)) {
                                  message = ReadSMS();
-//                                extractCoordinates(messageBody);
                                 extractCoordinates(message);
                             }
                         }
@@ -198,6 +196,10 @@ public class MainActivity extends AppCompatActivity {
                 accidentDetails.put(key, value);
             }
         }
+        String addr = getStringAddressFromLocation();
+        accidentDetails.put("address",addr);
+        System.out.println(accidentDetails);
+        Toast.makeText(this, accidentDetails.get("address"), Toast.LENGTH_SHORT).show();
         return accidentDetails;
     }
 
@@ -322,19 +324,50 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
-
-    private void getAddressFromLocation() {
+    private String getStringAddressFromLocation() {
+        String addressString = "";
         try {
             double latitude = Double.parseDouble(editTextLatitude.getText().toString());
             double longitude = Double.parseDouble(editTextLongitude.getText().toString());
-
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             try {
                 List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
                 if (addresses != null && !addresses.isEmpty()) {
                     Address address = addresses.get(0);
-                    String addressString = address.getAddressLine(0); // Full address
+                    addressString = address.getAddressLine(0); // Full address
                     textViewAddress.setText("Address: " + addressString);
+
+                    showCustomAlert("ACCIDENT ALERT",addressString);
+//                    Intent intent = new Intent(MainActivity.this,AlertScreenActivity.class);
+//                    startActivity(intent);
+//                    finish();
+                } else {
+                    textViewAddress.setText("Address not found.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                textViewAddress.setText("Unable to fetch address. Check network.");
+            }
+            return addressString;
+        } catch (NumberFormatException e) {
+            textViewAddress.setText("Please enter valid coordinates.");
+        }
+        return addressString;
+    }
+
+    private void getAddressFromLocation() {
+        String addressString = "";
+        try {
+            double latitude = Double.parseDouble(editTextLatitude.getText().toString());
+            double longitude = Double.parseDouble(editTextLongitude.getText().toString());
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            try {
+                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                if (addresses != null && !addresses.isEmpty()) {
+                    Address address = addresses.get(0);
+                    addressString = address.getAddressLine(0); // Full address
+                    textViewAddress.setText("Address: " + addressString);
+
                     showCustomAlert("ACCIDENT ALERT",addressString);
 //                    Intent intent = new Intent(MainActivity.this,AlertScreenActivity.class);
 //                    startActivity(intent);

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Smart Safety</string>
     <string name="sender_phone_number">6354997765</string>
+    <string name="nav_open">Open Navigation Drawer</string>
+    <string name="nav_close">Close Navigation Drawer</string>
+
 </resources>
